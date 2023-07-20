@@ -45,70 +45,59 @@ class Cell:
         self_center_y = (self._y1 + self._y2) / 2
         next_center_x = (next_cell._x1 + next_cell._x2) / 2
         next_center_y = (next_cell._y1 + next_cell._y2) / 2
+        fill_color = "red"
+
         if undo:
-            # make fill color gray
-            # to draw line up
-            if not self.has_top_wall and not next_cell.has_bottom_wall:
-                line = Line(
-                    Point(self_center_x, self_center_y),
-                    Point(next_center_x, next_center_y),
-                )
-                self._win.draw_line(line, "gray")
+            fill_color = "gray"
 
-            # to draw line down
-            if not self.has_bottom_wall and not next_cell.has_top_wall:
-                line = Line(
-                    Point(self_center_x, self_center_y),
-                    Point(next_center_x, next_center_y),
-                )
-                self._win.draw_line(line, "gray")
+        # to draw line up
+        if self._y1 < next_cell._y1:
+            line = Line(
+                Point(self_center_x, self_center_y),
+                Point(next_center_x, self._y1),
+            )
+            self._win.draw_line(line, fill_color)
+            line = Line(
+                Point(next_center_x, next_cell._y2), Point(next_center_x, next_center_y)
+            )
+            self._win.draw_line(line, fill_color)
 
-            # to draw line left
-            if not self.has_left_wall and not next_cell.has_right_wall:
-                line = Line(
-                    Point(self_center_x, self_center_y),
-                    Point(next_center_x, next_center_y),
-                )
-                self._win.draw_line(line, "gray")
+        # to draw line down
+        if self._y1 > next_cell._y1:
+            line = Line(
+                Point(self_center_x, self_center_y),
+                Point(next_center_x, next_cell._y2),
+            )
 
-            # to draw line right
-            if not self.has_right_wall and not next_cell.has_left_wall:
-                line = Line(
-                    Point(self_center_x, self_center_y),
-                    Point(next_center_x, next_center_y),
-                )
-                self._win.draw_line(line, "gray")
+            self._win.draw_line(line, fill_color)
+            line = Line(
+                Point(next_center_x, next_center_y), Point(next_center_x, next_cell._y1)
+            )
+            self._win.draw_line(line, fill_color)
 
-        else:
-            # make fill color red
-            # to draw line up
-            if not self.has_top_wall and not next_cell.has_bottom_wall:
-                line = Line(
-                    Point(self_center_x, self_center_y),
-                    Point(next_center_x, next_center_y),
-                )
-                self._win.draw_line(line, "red")
+        # to draw line left
+        if self._x1 > next_cell._x1:
+            line = Line(
+                Point(self._x1, self_center_y),
+                Point(next_center_x, next_center_y),
+            )
 
-            # to draw line down
-            if not self.has_bottom_wall and not next_cell.has_top_wall:
-                line = Line(
-                    Point(self_center_x, self_center_y),
-                    Point(next_center_x, next_center_y),
-                )
-                self._win.draw_line(line, "red")
+            self._win.draw_line(line, fill_color)
 
-            # to draw line left
-            if not self.has_left_wall and not next_cell.has_right_wall:
-                line = Line(
-                    Point(self_center_x, self_center_y),
-                    Point(next_center_x, next_center_y),
-                )
-                self._win.draw_line(line, "red")
+            line = Line(
+                Point(next_center_x, next_center_y), Point(next_cell._x2, next_center_y)
+            )
+            self._win.draw_line(line, fill_color)
 
-            # to draw line right
-            if not self.has_right_wall and not next_cell.has_left_wall:
-                line = Line(
-                    Point(self_center_x, self_center_y),
-                    Point(next_center_x, next_center_y),
-                )
-                self._win.draw_line(line, "red")
+        # to draw line right
+        if self._x1 < next_cell._x1:
+            line = Line(
+                Point(self_center_x, self_center_y),
+                Point(self._x2, next_center_y),
+            )
+
+            self._win.draw_line(line, fill_color)
+            line = Line(
+                Point(next_cell._x1, next_center_y), Point(next_center_x, next_center_y)
+            )
+            self._win.draw_line(line, fill_color)
